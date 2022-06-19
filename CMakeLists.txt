@@ -18,17 +18,21 @@ set(REDENGINE_LIB_PATH "${REDENGINE_PATH}/${CMAKE_CXX_COMPILER_ID}/${LOWERCASE_B
 if(MSVC)
     include(c:/vcpkg/scripts/buildsystems/vcpkg.cmake)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251 /wd4996 /wd4275")
+    set(PLUGINS_PLATFORM "windows")
+elseif(UNIX)
+    #    include(/opt/vcpkg/scripts/buildsystems/vcpkg.cmake)
+    set(PLUGINS_PLATFORM "linux")
 elseif(APPLE)
     #    include(/home/jsalvador/vcpkg/scripts/buildsystems/vcpkg.cmake)
-elseif(LINUX)
-    #    include(/opt/vcpkg/scripts/buildsystems/vcpkg.cmake)
+    set(PLUGINS_PLATFORM "macos")
 endif()
 
 find_package(fmt CONFIG REQUIRED)
+find_library(LIBICONV   iconv)
 
 add_subdirectory(datasource-csv)
 add_subdirectory(datasource-spss)
 add_subdirectory(exporter-txt)
 
-set( CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../DISTRIBUTION/${CMAKE_CXX_COMPILER_ID}/${LOWERCASE_BUILD_TYPE} )
+set( CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../DISTRIBUTION/${PLUGINS_PLATFORM}/${LOWERCASE_BUILD_TYPE} )
 
