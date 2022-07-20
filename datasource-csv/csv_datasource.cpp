@@ -13,25 +13,12 @@
 
 using json_type=nlohmann::ordered_json;
 
-class TApiDatasourceCsv : public TRedDatasourcePluginApi {
-public:
-    TApiDatasourceCsv() = default;
-    TRedDatasource* createDatasource() override {
-        return new TCsvDatasource();
-    }
-
-    std::string type() const override {
-        return std::string(DATASOURCE_CSV);
-    }
-
-    std::string description() const override {
-        return std::string( "CSV Redatam datasource" );
-    }
-};
+REGISTER_PLUGIN_DATASOURCE( DATASOURCE_CSV,
+                            TCsvDatasource,
+                            "CSV Redatam datasource" );
 
 REDATAM_PLUNGIN_EXPORTER_FN_NAME() {
-//    REGISTER_DATASOURCE( DATASOURCE_CSV );
-    red::registerDatasourceType( new TApiDatasourceCsv() );
+    REGISTER_DATASOURCE( DATASOURCE_CSV );
 }
 //-----------------------------------------------------------------------------
 TCsvDatasourceField::TCsvDatasourceField( TRedDatasource* owner )

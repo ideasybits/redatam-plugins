@@ -10,6 +10,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 string(TOLOWER ${CMAKE_BUILD_TYPE} LOWERCASE_BUILD_TYPE)
 string(TOUPPER ${CMAKE_BUILD_TYPE} UPPERCASE_BUILD_TYPE)
 
+find_package(Boost REQUIRED COMPONENTS filesystem iostreams)
+find_package(chartdir CONFIG REQUIRED)
+
 #---------------------------------------------------
 # path to the REDENGINE distribution
 add_definitions(-DRED_ENGINE_EXPORTS=1)
@@ -35,6 +38,7 @@ find_library(LIBICONV   iconv)
 add_subdirectory(datasource-csv)
 add_subdirectory(datasource-spss)
 add_subdirectory(exporter-txt)
+add_subdirectory(exporter-graphs)
 
 set( CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../DISTRIBUTION/${PLUGINS_PLATFORM}/${LOWERCASE_BUILD_TYPE} )
 

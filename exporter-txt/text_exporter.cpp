@@ -10,26 +10,11 @@
 
 #include "fort.hpp"
 
-class TApiExporterTxtPlugin : public TRedExporterPluginApi {
-public:
-    TApiExporterTxtPlugin() = default;
-
-    virtual std::shared_ptr<TRedExporter> createExporter() {
-        return std::make_shared<TRedTextExporter>();
-    }
-
-    std::string type() const override {
-        return std::string(EXPORTER_TEXT);
-    }
-
-    std::string description() const override {
-        return std::string("TEXT Redatam exporter (.txt files)");
-    }
-};
+DEFINE_PLUGIN_EXPORTER( EXPORTER_TEXT,
+                        TRedTextExporter, "TEXT Redatam exporter (.txt files)" );
 
 REDATAM_PLUNGIN_EXPORTER_FN_NAME() {
-//    REGISTER_EXPORTER( EXPORTER_TEXT );
-    red::registerExporterType( new TApiExporterTxtPlugin() );
+    REGISTER_EXPORTER( EXPORTER_TEXT );
 }
 
 //---------------------------------------------------------------------------------
@@ -37,22 +22,31 @@ class TRedConsoleTablePrinter : public TRedOutputPrinter {
 private:
     TRedOutput* out;
     size_t rows, cols;
+    int decimals;
 
     fort::utf8_table tb1;
 public:
     TRedConsoleTablePrinter( TRedOutput* out ) {
         this->out = out;
+
+        decimals = 4;
+        if( out->options().decimals.has_value() ) {
+            this->decimals = out->options().decimals.value();
+        }
     }
 
     virtual void printValue( size_t row, size_t col, red::variant value ) override {
         if( std::holds_alternative<int64_t>(value)) {
-            tb1[row][col] = fmt::format("{}",std::get<int64_t>(value));
+            int64_t val = std::get<int64_t>(value);
+            tb1[row][col] = fmt::format("{}",val);
         }
         else if( std::holds_alternative<double>(value)) {
-            tb1[row][col] = fmt::format("{}",std::get<double>(value));
+            double val = std::get<double>(value);
+            tb1[row][col] = fmt::format("{:.{}f}",val, decimals );
         }
         else if( std::holds_alternative<std::string>(value)) {
-            tb1[row][col] = std::get<std::string>(value);
+            std::string val = std::get<std::string>(value);
+            tb1[row][col] = val;
         }
     }
 
@@ -69,6 +63,10 @@ public:
     virtual void end( ) override {
 
         if(out->type()==eOutputType::AREALIST ) {
+            return ;
+        }
+
+        if(out->dimension()==0 ) {
             return ;
         }
 
@@ -101,59 +99,73 @@ public:
 };
 //---------------------------------------------------------------------------------
 TRedTextExporter::TRedTextExporter() {
-
 }
 
 TRedTextExporter::~TRedTextExporter() {
-
 }
 
 std::string TRedTextExporter::exportRaw( TRedOutput* output ) {
-//    csvfile ff;
-//    auto ds = output->dataset();
-//
-//    int cols = ds->numFields();
-//    for(int i=0;i<cols;i++ ) {
-//        auto field = ds->fieldByIndex(i);
-//        ff<<field->name();
-//    }
-//    ff<<endrow;
-//
-//    ds->first();
-//    while( ds->next() ) {
-//        int cols = ds->numFields();
-//
-//        for(int i=0;i<cols;i++ ) {
-//            auto field = ds->fieldByIndex(i);
-//
-//            if(field->isNull() ) {
-//                ff<<"";
-//            }
-//            else {
-//                if (field->type() == eVarType::integer) {
-//                    ff << field->asInteger();
-//                } else if (field->type() == eVarType::real) {
-//                    ff << field->asReal();
-//                } else if (field->type() == eVarType::string) {
-//                    ff << field->asString();
-//                }
-//            }
-//        }
-//
-//        ff<<endrow;
-//    }
-//
-//    return ff.str();
-    return "";
+    auto dataset = output->dataset();
+
+    dataset->first();
+
+    size_t fieldCount = dataset->numFields();
+
+    fort::utf8_table table;
+
+    table << fort::header;
+
+    for( int i=0; i<fieldCount; i++ ) {
+        auto field = dataset->fieldByIndex(i);
+
+        table << fmt::format( "{}({})", field->name(), (int )field->type() );
+    }
+
+    table << fort::endr;
+
+    while (dataset->next()) {
+        for( int i=0; i<fieldCount; i++ ) {
+            auto field = dataset->fieldByIndex(i);
+
+            if( field->isNull() ) {
+                table << "-";
+            }
+            else {
+                table << fmt::format( "{}", field->asString() );
+            }
+        }
+
+        table << fort::endr;
+    }
+
+    fmt::print("\n");
+
+    for( int i=0; i<fieldCount; i+=3 ) {
+        table.column(i).set_cell_text_align(fort::text_align::right);
+        table.column(i+2).set_cell_text_align(fort::text_align::center);
+    }
+
+    table.column(fieldCount-1).set_cell_text_align(fort::text_align::right);
+
+    return table.to_string();
 }
 
 TRedExporter::Buffer TRedTextExporter::exportToBuffer( TRedOutput* output, bool raw ) {
-    TRedConsoleTablePrinter printer(output);
 
-    auto exporter = output->exporter(false);
-    exporter->exportTo(&printer);
+    std::string content;
 
-    std::string content = printer.content();
+    if( raw ) {
+        content = exportRaw(output);
+    }
+    else {
+
+        TRedConsoleTablePrinter printer(output);
+
+        auto exporter = output->exporter(false);
+        exporter->exportTo(&printer);
+
+        content = printer.content();
+    }
 
     Buffer ret;
 
