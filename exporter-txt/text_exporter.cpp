@@ -62,7 +62,7 @@ public:
 
     virtual void end( ) override {
 
-        if(out->type()==eOutputType::AREALIST ) {
+        if( out->type()==eOutputType::AREALIST || out->type()==eOutputType::TABLIST ) {
             return ;
         }
 

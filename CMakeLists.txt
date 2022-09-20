@@ -18,7 +18,7 @@ find_package(chartdir CONFIG REQUIRED)
 add_definitions(-DRED_ENGINE_EXPORTS=1)
 set(REDENGINE_PATH "d:/DEV_REDATAM_2019/DISTRIBUTION")
 set(REDENGINE_INCLUDE_PATH "${REDENGINE_PATH}/include")
-set(REDENGINE_LIB_PATH "${REDENGINE_PATH}/${CMAKE_CXX_COMPILER_ID}/${LOWERCASE_BUILD_TYPE}/lib")
+set(REDENGINE_LIB_PATH "${REDENGINE_PATH}/windows-msvc/${LOWERCASE_BUILD_TYPE}/lib")
 
 if(MSVC)
     include(c:/vcpkg/scripts/buildsystems/vcpkg.cmake)
