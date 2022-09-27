@@ -97,6 +97,7 @@ public:
         return tb1.to_string();
     }
 };
+
 //---------------------------------------------------------------------------------
 TRedTextExporter::TRedTextExporter() {
 }

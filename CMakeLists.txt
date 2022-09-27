@@ -12,6 +12,7 @@ string(TOUPPER ${CMAKE_BUILD_TYPE} UPPERCASE_BUILD_TYPE)
 
 find_package(Boost REQUIRED COMPONENTS filesystem iostreams)
 find_package(chartdir CONFIG REQUIRED)
+find_library(LIBXLSXWRITER  xlsxwriter)
 
 #---------------------------------------------------
 # path to the REDENGINE distribution
@@ -39,6 +40,7 @@ add_subdirectory(datasource-csv)
 add_subdirectory(datasource-spss)
 add_subdirectory(exporter-txt)
 add_subdirectory(exporter-graphs)
+add_subdirectory(exporter-xlsx)
 
 set( CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../DISTRIBUTION/${PLUGINS_PLATFORM}/${LOWERCASE_BUILD_TYPE} )
 
