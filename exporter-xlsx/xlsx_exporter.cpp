@@ -27,6 +27,7 @@ private:
     lxw_format    *format;
 
     lxw_format* format_merge;
+    lxw_format* format_number;
 
     //--options
     int decimals;
@@ -47,10 +48,17 @@ public:
         format_set_bold(format);
         format_set_bg_color(format, 0xcedaf5);
 
+        format_number = nullptr;
+
         //--options
         if( out->options().decimals.has_value() ) {
             this->decimals = out->options().decimals.value();
+            std::string nformat = "#,##0." + std::string(this->decimals, '0');
+
+            format_number = workbook_add_format(workbook);
+            format_set_num_format(format_number, nformat.c_str());
         }
+
     }
 
     virtual void printValue( size_t row, size_t col, red::variant value ) override {
@@ -81,7 +89,7 @@ public:
         }
         else if( std::holds_alternative<double>(value) ) {
             double val = std::get<double>(value);
-            worksheet_write_number(worksheet, (lxw_col_t )row, (lxw_col_t )col, val, celFormat);
+            worksheet_write_number(worksheet, (lxw_col_t )row, (lxw_col_t )col, val, format_number);
         }
         else if( std::holds_alternative<std::string>(value) ) {
             std::string val = std::get<std::string>(value);
