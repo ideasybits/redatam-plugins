@@ -11,7 +11,7 @@ file(GLOB plugin_DATASOURCE_CSV
 add_library(datasource-csv SHARED ${plugin_DATASOURCE_CSV} )
 if(WIN32)
     target_link_libraries(datasource-csv
-            ${REDENGINE_LIB_PATH}/redengine.lib
+            ${REDENGINE_LIB}
             fmt::fmt
             )
 elseif(UNIX)
@@ -19,7 +19,7 @@ elseif(UNIX)
             fmt::fmt
             dl
             pthread
-            ${REDENGINE_LIB_PATH}/redengine.lib
+            ${REDENGINE_LIB}
             )
 endif()
 

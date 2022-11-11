@@ -13,14 +13,14 @@ add_library(exporter-text SHARED ${plugin_EXPORTER_TEXT} )
 if(WIN32)
     target_link_libraries(exporter-text
             fmt::fmt
-            ${REDENGINE_LIB_PATH}/redengine.lib
+            ${REDENGINE_LIB}
             )
 elseif(UNIX)
     target_link_libraries(exporter-text
             fmt::fmt
             dl
             pthread
-            ${REDENGINE_LIB_PATH}/redengine.lib
+            ${REDENGINE_LIB}
             )
 endif()
 

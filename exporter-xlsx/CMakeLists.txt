@@ -11,7 +11,7 @@ if(WIN32)
     target_link_libraries(exporter-xlsx
             fmt::fmt
             ${LIBXLSXWRITER}
-            ${REDENGINE_LIB_PATH}/redengine.lib
+            ${REDENGINE_LIB}
             )
 elseif(UNIX)
     target_link_libraries(exporter-xlsx
@@ -19,7 +19,7 @@ elseif(UNIX)
             dl
             pthread
             ${LIBXLSXWRITER}
-            ${REDENGINE_LIB_PATH}/redengine.lib
+            ${REDENGINE_LIB}
             )
 endif()
 

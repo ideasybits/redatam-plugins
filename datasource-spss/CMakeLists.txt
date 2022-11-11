@@ -23,7 +23,7 @@ if(WIN32)
     target_link_libraries(datasource-spss
             fmt::fmt
             ${LIBICONV}
-            ${REDENGINE_LIB_PATH}/redengine.lib
+            ${REDENGINE_LIB}
             ${READSTAT_PATH}
             )
 elseif(UNIX)
@@ -32,7 +32,7 @@ elseif(UNIX)
             #            ${LIBICONV}
             dl
             pthread
-            ${REDENGINE_LIB_PATH}/redengine.lib
+            ${REDENGINE_LIB}
             )
 endif()
 

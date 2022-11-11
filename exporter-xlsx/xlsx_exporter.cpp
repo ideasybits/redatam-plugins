@@ -124,6 +124,12 @@ std::string TRedXlsxExporter::exportRaw( TRedOutput* output ) {
 
 TRedExporter::Buffer TRedXlsxExporter::exportToBuffer( TRedOutput* output, bool raw ) {
 
+//    auto params = output->options().save_params;
+//
+//    if(params.find("width")!=params.end() ) {
+//        width = std::stoi(params.at("width"));
+//    }
+
     std::string content;
 
     std::string tmpFilename = fmt::format("{}.xlsx", std::tmpnam(nullptr) );

@@ -10,7 +10,7 @@ add_library(exporter-graphs SHARED ${plugin_EXPORTER_GRAPH} )
 if(WIN32)
     target_link_libraries(exporter-graphs
             fmt::fmt
-            ${REDENGINE_LIB_PATH}/redengine.lib
+            ${REDENGINE_LIB}
 			Boost::boost Boost::iostreams Boost::filesystem
             chartdir
             )
@@ -19,7 +19,7 @@ elseif(UNIX)
             fmt::fmt
             dl
             pthread
-            ${REDENGINE_LIB_PATH}/redengine.lib
+            ${REDENGINE_LIB}
 			chartdir
             )
 endif()
