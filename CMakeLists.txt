@@ -42,6 +42,7 @@ add_subdirectory(datasource-spss)
 add_subdirectory(exporter-txt)
 add_subdirectory(exporter-graphs)
 add_subdirectory(exporter-xlsx)
+add_subdirectory(exporter-rdata)
 
 set( CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../DISTRIBUTION/${PLUGINS_PLATFORM}/${LOWERCASE_BUILD_TYPE} )
 
