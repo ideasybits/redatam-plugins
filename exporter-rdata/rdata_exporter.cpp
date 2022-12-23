@@ -197,8 +197,6 @@ TRedExporter::Buffer TRedXlsxExporter::exportToBuffer( TRedOutput* output, bool 
         content = exportRaw(output);
     }
     else {
-
-
         TRedMinipXlsxPrinter printer( output, tmpFilename);
 
         auto exporter = output->exporter(false);
