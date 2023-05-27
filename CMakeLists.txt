@@ -11,7 +11,7 @@ string(TOLOWER ${CMAKE_BUILD_TYPE} LOWERCASE_BUILD_TYPE)
 string(TOUPPER ${CMAKE_BUILD_TYPE} UPPERCASE_BUILD_TYPE)
 
 find_package(Boost REQUIRED COMPONENTS filesystem iostreams)
-find_package(chartdir CONFIG REQUIRED)
+#find_package(chartdir CONFIG REQUIRED)
 find_library(LIBXLSXWRITER  xlsxwriter)
 
 #---------------------------------------------------
@@ -19,6 +19,9 @@ find_library(LIBXLSXWRITER  xlsxwriter)
 add_definitions(-DRED_ENGINE_EXPORTS=1)
 set(REDENGINE_PATH "d:/DEV_REDATAM_2019/DISTRIBUTION")
 set(REDENGINE_INCLUDE_PATH "${REDENGINE_PATH}/include")
+#set(REDENGINE_LIB_PATH "${REDENGINE_PATH}/windows-gcc/${LOWERCASE_BUILD_TYPE}/lib")
+#set(REDENGINE_LIB "${REDENGINE_LIB_PATH}/libredengine-1.0.0-rc1.dll.a")
+
 set(REDENGINE_LIB_PATH "${REDENGINE_PATH}/windows-msvc/${LOWERCASE_BUILD_TYPE}/lib")
 set(REDENGINE_LIB "${REDENGINE_LIB_PATH}/redengine-1.0.0-rc1.lib")
 
@@ -39,8 +42,8 @@ find_library(LIBICONV   iconv)
 
 add_subdirectory(datasource-csv)
 add_subdirectory(datasource-spss)
-add_subdirectory(exporter-txt)
-add_subdirectory(exporter-graphs)
+#add_subdirectory(exporter-txt)
+#add_subdirectory(exporter-graphs)
 add_subdirectory(exporter-xlsx)
 add_subdirectory(exporter-rdata)
 
