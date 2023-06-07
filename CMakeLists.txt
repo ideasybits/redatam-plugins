@@ -14,6 +14,12 @@ find_package(Boost REQUIRED COMPONENTS filesystem iostreams)
 #find_package(chartdir CONFIG REQUIRED)
 find_library(LIBXLSXWRITER  xlsxwriter)
 
+IF(CMAKE_BUILD_TYPE MATCHES Debug)
+    set(DEBUG_CHAR d)
+elseif(CMAKE_BUILD_TYPE MATCHES Release)
+    set(DEBUG_CHAR )
+endif()
+
 #---------------------------------------------------
 # path to the REDENGINE distribution
 add_definitions(-DRED_ENGINE_EXPORTS=1)
@@ -23,7 +29,7 @@ set(REDENGINE_INCLUDE_PATH "${REDENGINE_PATH}/include")
 #set(REDENGINE_LIB "${REDENGINE_LIB_PATH}/libredengine-1.0.0-rc1.dll.a")
 
 set(REDENGINE_LIB_PATH "${REDENGINE_PATH}/windows-msvc/${LOWERCASE_BUILD_TYPE}/lib")
-set(REDENGINE_LIB "${REDENGINE_LIB_PATH}/redengine-1.0.0-rc1.lib")
+set(REDENGINE_LIB "${REDENGINE_LIB_PATH}/redengine${DEBUG_CHAR}-1.0.0-rc1.lib")
 
 if(MSVC)
     include(c:/vcpkg/scripts/buildsystems/vcpkg.cmake)
