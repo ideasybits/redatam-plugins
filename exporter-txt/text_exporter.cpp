@@ -10,12 +10,12 @@
 
 #include "fort.hpp"
 
-DEFINE_PLUGIN_EXPORTER( EXPORTER_TEXT,
-                        TRedTextExporter, "TEXT Redatam exporter (.txt files)" );
-
-REDATAM_PLUNGIN_EXPORTER_FN_NAME() {
-    REGISTER_EXPORTER( EXPORTER_TEXT );
-}
+//DEFINE_PLUGIN_EXPORTER( EXPORTER_TEXT,
+//                        TRedTextExporter, "TEXT Redatam exporter (.txt files)" );
+//
+//REDATAM_PLUNGIN_EXPORTER_FN_NAME() {
+//    REGISTER_EXPORTER( EXPORTER_TEXT );
+//}
 
 //---------------------------------------------------------------------------------
 class TRedConsoleTablePrinter : public TRedOutputPrinter {

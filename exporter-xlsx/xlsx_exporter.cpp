@@ -9,11 +9,31 @@
 #include <fmt/core.h>
 #include <xlsxwriter.h>
 
-DEFINE_PLUGIN_EXPORTER( EXPORTER_XLSX,
-                        TRedXlsxExporter, "XLSX Redatam exporter (.xlsx files)" );
+//---------------------------------------------------------------------------------
+class TRedXLSXExporterFactory : public TRedExporterFactory {
+public:
+    TRedXLSXExporterFactory() = default;
+    virtual ~TRedXLSXExporterFactory()=default;
+
+    virtual std::shared_ptr<TRedExporter> createExporter() override {
+        return std::make_shared<TRedXlsxExporter>();
+    }
+
+    virtual std::string type() const override {
+        return EXPORTER_XLSX;//TRedXlsxExporter::EXPORTER_NAME;
+    }
+
+    virtual std::string description() const override {
+        return std::string("XLSX Redatam exporter (.xlsx files)");
+    }
+};
+
+void register_exporter_xlsx() {
+    red::registerExporterType( std::make_shared<TRedXLSXExporterFactory>() );
+}
 
 REDATAM_PLUNGIN_EXPORTER_FN_NAME() {
-    REGISTER_EXPORTER( EXPORTER_XLSX );
+    register_exporter_xlsx();
 }
 
 //---------------------------------------------------------------------------------

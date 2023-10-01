@@ -9,12 +9,12 @@
 
 const std::string EXPORTER_RDATA = "RDATA";
 
-class TRedXlsxExporter: public TRedExporter {
+class TRedRDATAExporter: public TRedExporter {
 private:
     std::string exportRaw( TRedOutput* output );
 public:
-    TRedXlsxExporter();
-    virtual ~TRedXlsxExporter();
+    TRedRDATAExporter();
+    virtual ~TRedRDATAExporter();
 
     virtual bool isBinary() override {return true;}
     virtual Buffer exportToBuffer( TRedOutput* output, bool raw ) override;

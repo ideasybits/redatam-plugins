@@ -13,13 +13,32 @@
 
 using json_type=nlohmann::ordered_json;
 
-REGISTER_PLUGIN_DATASOURCE( DATASOURCE_CSV,
-                            TCsvDatasource,
-                            "CSV Redatam datasource" );
+//---------------------------------------------------------------------------------
+class TRedCSVDatasourceFactory : public TRedDatasourceFactory {
+public:
+    virtual ~TRedCSVDatasourceFactory() {}
+
+    virtual std::shared_ptr<TRedDatasource> createDatasource() override {
+        return std::make_shared<TCsvDatasource>();
+    }
+
+    virtual std::string type() const override {
+        return DATASOURCE_CSV;
+    }
+
+    virtual std::string description() const override {
+        return std::string("CSV Redatam datasource");
+    }
+};
+
+void register_datasource_csv( ) {
+    red::registerDatasourceType( std::make_shared<TRedCSVDatasourceFactory>() );
+}
 
 REDATAM_PLUNGIN_EXPORTER_FN_NAME() {
-    REGISTER_DATASOURCE( DATASOURCE_CSV );
+    register_datasource_csv();
 }
+
 //-----------------------------------------------------------------------------
 TCsvDatasourceField::TCsvDatasourceField( TRedDatasource* owner )
     : TRedDatasourceField(owner) {

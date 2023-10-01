@@ -12,17 +12,65 @@
 
 using json_type=nlohmann::ordered_json;
 
-REGISTER_PLUGIN_DATASOURCE( DATASOURCE_SPSS,
-                            TSpssDatasource,
-                            "SPSS Redatam datasource" );
+//REGISTER_PLUGIN_DATASOURCE( DATASOURCE_SPSS,
+//                            TSpssDatasource,
+//                            "SPSS Redatam datasource" );
+//
+//REGISTER_PLUGIN_DATASOURCE( DATASOURCE_STATA,
+//                            TStataDatasource,
+//                            "STATA Redatam datasource" );
+//
+//REDATAM_PLUNGIN_EXPORTER_FN_NAME() {
+//    REGISTER_DATASOURCE( DATASOURCE_SPSS );
+//    REGISTER_DATASOURCE( DATASOURCE_STATA );
+//}
 
-REGISTER_PLUGIN_DATASOURCE( DATASOURCE_STATA,
-                            TStataDatasource,
-                            "STATA Redatam datasource" );
+//---------------------------------------------------------------------------------
+class TRedSPSSDatasourceFactory : public TRedDatasourceFactory {
+public:
+    virtual ~TRedSPSSDatasourceFactory() {}
+
+    virtual std::shared_ptr<TRedDatasource> createDatasource() override {
+        return std::make_shared<TSpssDatasource>();
+    }
+
+    virtual std::string type() const override {
+        return DATASOURCE_SPSS;
+    }
+
+    virtual std::string description() const override {
+        return std::string("SPSS Redatam datasource");
+    }
+};
+
+class TRedSTATADatasourceFactory : public TRedDatasourceFactory {
+public:
+    virtual ~TRedSTATADatasourceFactory() {}
+
+    virtual std::shared_ptr<TRedDatasource> createDatasource() override {
+        return std::make_shared<TStataDatasource>();
+    }
+
+    virtual std::string type() const override {
+        return DATASOURCE_STATA;
+    }
+
+    virtual std::string description() const override {
+        return std::string("STATA Redatam datasource");
+    }
+};
+
+void register_datasource_spss( ) {
+    red::registerDatasourceType( std::make_shared<TRedSPSSDatasourceFactory>() );
+}
+
+void register_datasource_stata( ) {
+    red::registerDatasourceType( std::make_shared<TRedSTATADatasourceFactory>() );
+}
 
 REDATAM_PLUNGIN_EXPORTER_FN_NAME() {
-    REGISTER_DATASOURCE( DATASOURCE_SPSS );
-    REGISTER_DATASOURCE( DATASOURCE_STATA );
+    register_datasource_spss();
+    register_datasource_stata();
 }
 
 //-----------------------------------------------------------------------------

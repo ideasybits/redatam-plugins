@@ -7,7 +7,6 @@
 #include <fstream>
 #include <redatam/utils.h>
 #include <fmt/core.h>
-//#include <xlsxwriter.h>
 
 #include <fcntl.h>
 #include <sys/types.h>
@@ -17,12 +16,34 @@
 
 #include "librdata/rdata.h"
 
-DEFINE_PLUGIN_EXPORTER( EXPORTER_RDATA,
-                        TRedXlsxExporter, "RDATA Redatam exporter (.rdata files)" );
+//---------------------------------------------------------------------------------
+class TRedRDATAExporterFactory : public TRedExporterFactory {
+public:
+    TRedRDATAExporterFactory() = default;
+    virtual ~TRedRDATAExporterFactory()=default;
+
+    virtual std::shared_ptr<TRedExporter> createExporter() override {
+        return std::make_shared<TRedRDATAExporter>();
+    }
+
+    virtual std::string type() const override {
+        return EXPORTER_RDATA;//TRedXlsxExporter::EXPORTER_NAME;
+    }
+
+    virtual std::string description() const override {
+        return std::string("RDATA Redatam exporter (.rdata files)");
+    }
+};
+
+void register_exporter_rdata() {
+    red::registerExporterType( std::make_shared<TRedRDATAExporterFactory>() );
+}
 
 REDATAM_PLUNGIN_EXPORTER_FN_NAME() {
-    REGISTER_EXPORTER( EXPORTER_RDATA );
+    register_exporter_rdata();
 }
+
+//---------------------------------------------------------------------------------
 
 static ssize_t write_data(const void *bytes, size_t len, void *ctx) {
     int fd = *(int *)ctx;
@@ -169,19 +190,19 @@ public:
 };
 
 //---------------------------------------------------------------------------------
-TRedXlsxExporter::TRedXlsxExporter() : TRedExporter() {
+TRedRDATAExporter::TRedRDATAExporter() : TRedExporter() {
 
 }
 
-TRedXlsxExporter::~TRedXlsxExporter() {
+TRedRDATAExporter::~TRedRDATAExporter() {
 
 }
 
-std::string TRedXlsxExporter::exportRaw( TRedOutput* output ) {
+std::string TRedRDATAExporter::exportRaw( TRedOutput* output ) {
     return "";
 }
 
-TRedExporter::Buffer TRedXlsxExporter::exportToBuffer( TRedOutput* output, bool raw ) {
+TRedExporter::Buffer TRedRDATAExporter::exportToBuffer( TRedOutput* output, bool raw ) {
 
 //    auto params = output->options().save_params;
 //
